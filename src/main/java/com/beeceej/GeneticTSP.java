@@ -61,22 +61,22 @@ public class GeneticTSP {
           .mapToDouble(i -> getDistance.apply(tour.getTour().get(i), tour.getTour().get(i + 1)))
           .sum(), tour);
 
-
   public static void main(String[] args) {
     final int genCount = 1000;
     final int seedPopulationCount = locations.size() * 1000;
     final List<Tour> population = seed.apply(seedPopulationCount);
 
-    List<TourStats> stats = IntStream.range(0, genCount).mapToObj(i -> population.stream()
+    List<TourStats> stats = IntStream.range(0, genCount).mapToObj(i -> population.parallelStream()
+            .map(Tour.mutate)
+            .map(Tour.mutate)
             .map(Tour.mutate)
             .reduce(new TourStats(), (tourStats, tour) -> {
               final TourResult result = doTour.apply(tour);
-              boolean isShortest = result.getDistance() <= tourStats.getShortest().getDistance();
-              boolean isLongest = result.getDistance() >= tourStats.getLongest().getDistance();
+              final boolean isShortest = result.getDistance() <= tourStats.getShortest().getDistance();
+              final boolean isLongest = result.getDistance() >= tourStats.getLongest().getDistance();
               final List<TourResult> tours = new ArrayList<>();
               tours.add(result);
               tours.addAll(tourStats.getTours());
-              System.out.println(tours.size());
               return new TourStats(
                       isLongest ? result : tourStats.getLongest(),
                       isShortest ? result : tourStats.getShortest(),
