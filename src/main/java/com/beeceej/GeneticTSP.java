@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 public class GeneticTSP {
 
   private static final List<Location>
-          locations = LoadCities.loadCities.apply("/home/bjones/genetic-tsp/locations.txt");
+          locations = LoadCities.loadCities.apply(Objects.requireNonNull(GeneticTSP.class.getClassLoader().getResource("locations.txt")).getFile());
   private static final Map<String, Map<String, Double>>
           distanceMatrix = createDistanceMatrix(locations);
 
