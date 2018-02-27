@@ -12,6 +12,9 @@ my (loose) interpretation of a genetic algorithm eventually converges upon an op
 
 `-> Begin with a randomly generated seed Population of size N`
 
-`-> For M generations, perform random mutations on the traversal order, keeping only the most efficient routes (less than averagte)`
+`-> For M generations, perform random mutations on the traversal order, keeping only the most efficient routes (only routes with distance < than average)`
 
 `-> After M generations, we will have converged upon a near optimal solution in much less time than exhaustive search`
+
+A naive solution would be to calculate distance on every pass, but this can be amortized by pre-computing distances and retrieving them for amortized O(1) look up.
+I've only implemented pair look up, but this could be further implemented by adding look ups for A -> B -> C ... etc.
